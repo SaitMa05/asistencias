@@ -1,0 +1,37 @@
+body{
+    font-family: $fuente_principal;
+    background-color: #2c3e50;
+
+    .navbar{
+        background-color: $naranja;
+        width: 100%;
+        margin: 0;
+    }
+}
+.menu{
+    background-color: $azul;
+}
+.offcanvas{
+    background-color: $azul;
+}
+
+.btn-orange{
+    background-color: $naranja;
+    color: white;
+
+    &:hover{
+        background-color: darken($naranja, 10%);
+        color: darken(white, 10%);
+    }
+}
+
+.dropdown-menu{
+    background-color: $azulOscuro;
+}
+
+.dropdown-item{
+
+    &:hover{
+        background-color: darken($azul, 10%);
+    }
+}
