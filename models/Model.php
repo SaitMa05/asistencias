@@ -1,6 +1,6 @@
 <?php
-
 namespace Model;
+require_once ( __DIR__ . "/../core/LibFormat.php");
 
 class Model {
 
@@ -14,20 +14,36 @@ class Model {
     }
     
     public static function consultarSQL($query) {
-        // Consultar la base de datos
-        $resultado = self::$db->query($query);
-
-        // Iterar los resultados
-        $array = [];
-        while($registro = $resultado->fetch_assoc()) {
-            $array[] = static::crearObjeto($registro);
+        // Ejecutar la consulta
+        if (self::$db->real_query($query)) {
+            // Almacenar el resultado completo de la consulta
+            $resultado = self::$db->store_result();
+    
+            // Si no hay resultados, retornar un array vacío
+            if (!$resultado) {
+                return [];
+            }
+    
+            // Iterar sobre los resultados
+            $array = [];
+            while ($registro = $resultado->fetch_assoc()) {
+                $array[] = static::crearObjeto($registro);
+            }
+    
+            // Liberar los resultados
+            $resultado->free();
+    
+            // Asegurarse de que no quedan más resultados pendientes
+            while (self::$db->more_results()) {
+                self::$db->next_result();
+            }
+    
+            // Retornar los resultados obtenidos
+            return $array;
+        } else {
+            // Manejo de errores
+            throw new Exception('Error en la consulta: ' . self::$db->error);
         }
-
-        // liberar la memoria
-        $resultado->free();
-
-        // retornar los resultados
-        return $array;
     }
 
     protected static function crearObjeto($registro) {

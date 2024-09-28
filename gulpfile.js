@@ -21,7 +21,7 @@ const svg = require('gulp-svgmin');
 const path = {
     scss: 'src/scss/**/*.scss',
     css: './public/build/css/app.css',
-    js: 'src/js/**/*.js',
+    // js: 'src/js/**/*.js',
     img: 'src/img/**/*.{jpg,png}',
     imgmin: './public/build/img/**/*.{jpg,png}',
     svg: 'src/img/**/*.svg'
@@ -37,14 +37,14 @@ function compileSass() {
         .pipe(dest('./public/build/css'));
 }
  
-function compileJS(){
-    return src(path.js)
-        .pipe(sourcemaps.init())
-        .pipe(concat('bundle.js'))
-        .pipe(terser())
-        .pipe(sourcemaps.write('.'))
-        .pipe(dest('./public/build/js'));
-}
+// function compileJS(){
+//     return src(path.js)
+//         .pipe(sourcemaps.init())
+//         .pipe(concat('bundle.js'))
+//         .pipe(terser())
+//         .pipe(sourcemaps.write('.'))
+//         .pipe(dest('./public/build/js'));
+// }
  
  
 function imageMin(){
@@ -90,8 +90,8 @@ function imgSvg(){
  
 function autoCompile(){
     watch(path.scss,compileSass);
-    watch(path.js, compileJS);
+    // watch(path.js, compileJS);
     watch(path.img, parallel(imgAvif,imgWebp,imageMin));
 }
  
-exports.default = parallel(compileSass,compileJS,autoCompile,imgAvif,imageMin,imgWebp, imgSvg);
+exports.default = parallel(compileSass,autoCompile,imgAvif,imageMin,imgWebp, imgSvg);

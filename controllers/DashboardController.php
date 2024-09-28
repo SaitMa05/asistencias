@@ -3,10 +3,10 @@
 namespace Controllers;
 use MVC\Router;
 
-class HomeController{
+class DashboardController{
 
     public static function index(Router $router){
-        $router->render('home/index');
+        $router->render('dashboard/index');
     }
 
 }

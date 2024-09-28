@@ -30,10 +30,10 @@
     </div>
     <div class="mb-3">
         <label for="confirmarPassword" class="form-label text-white">Confirmar Contraseña</label>
-        <input type="password" class="form-control rounded-0" id="" name="" placeholder="Confirma tu contraseña" required>
+        <input type="password" class="form-control rounded-0" id="passwordConfirm" name="passwordConfirm" placeholder="Confirma tu contraseña" required>
     </div>
     <div class="mb-3">
-        <select class="form-select rounded-0" style="width: 60%;" name="fkRol" id="fkRol">
+        <select class="form-select rounded-0" style="" name="fkRol" id="fkRol">
             <option value="" disabled selected> -- Seleccionar --</option>
             <option value="1">Profesor</option>
             <option value="2">Preceptor</option>
@@ -43,4 +43,4 @@
     <button type="submit" class="btn btn-orange w-100 rounded-0">Registrarse</button>
 </form>
 
-<script src="../build/js/login.js"></script>
+<script src="../build/js/login/registro.js"></script>

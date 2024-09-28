@@ -1,0 +1,85 @@
+$(document).ready(function() {
+    $('#formRegistro').on('submit', function(e) {
+        e.preventDefault(); // Evita que el formulario se envíe de la manera tradicional
+
+        var formData = $(this).serialize(); // Serializa los datos del formulario
+
+        if (!validarFormulario(formData)) {
+            return;
+        }
+        
+        $.ajax({
+            url: '/registro/crear', // Cambia esto por la URL de tu servidor
+            type: 'POST',
+            data: formData,
+            dataType: 'json', // Indicamos que esperamos una respuesta JSON
+            beforeSend: function() {
+                $('#loading').show();
+            },
+            success: function(response) {
+                if (response.status) {
+                    toastr.success(response.message, 'Éxito');
+                    setTimeout(function() {
+                        redirect('/login'); // Función para redirigir después de un tiempo
+                    }, 2000);
+                    resetForm(); // Resetea el formulario si todo salió bien
+                } else {
+                    toastr.error(response.message, 'Error');
+                }
+            },
+            complete: function() {
+                $('#loading').hide();
+            },
+            error: function(xhr, status, error) {
+                toastr.error('¡Error al registrar!', 'Error');
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    function redirect(url) {
+        window.location.href = url; // Simple redirección
+    }
+
+    function resetForm() {
+        $('#formRegistro')[0].reset(); // Resetea el formulario
+    }
+
+    function validarFormulario(formData) {
+        // Aquí va la validación personalizada de tu formulario
+        // Regresa true si es válido, false si no lo es.
+        // Ejemplo simple:
+        const {nombre, apellido, nombreUsuario,dni, telefono,email, password, passwordConfirm } = formData.split('&').reduce((obj, item) => {
+            const [key, value] = item.split('=');
+            obj[key] = value;
+            return obj;
+        }, {});
+
+        if (nombreUsuario === '' || email === '' || password === '') {
+            toastr.error('Todos los campos son obligatorios', 'Error');
+            return false;
+        }
+
+        if (dni.length !== 8 || isNaN(dni)) {
+            toastr.error('El DNI debe ser valido', 'Error');
+            return false;
+        }
+
+        if (telefono.length < 6 || isNaN(telefono)) {
+            toastr.error('El teléfono debe ser valido', 'Error');
+            return false;
+        }
+
+        if (password.length < 3) {
+            toastr.error('La contraseña debe tener al menos 6 caracteres', 'Error');
+            return false;
+        }
+
+        if (password !== passwordConfirm) {
+            toastr.error('Las contraseñas no coinciden', 'Error');
+            return false;
+        }
+
+        return true;
+    }
+});

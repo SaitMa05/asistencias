@@ -42,7 +42,7 @@ class LoginModel extends Model{
         $this->email = $args['email'] ?? '';
         $this->password = $args['password'] ?? '';
         $this->aceptado = $args['aceptado'] ?? '';
-        $this->fechaCreacion = $args['fechaCreacion'] ?? date('Y/m/d');
+        $this->fechaCreacion = $args['fechaCreacion'] ?? null;
         $this->fechaModificacion = $args['fechaModificacion'] ?? null;
         $this->fechaEliminacion = $args['fechaEliminacion'] ?? null;
         $this->creadorPor = $args['creadorPor'] ?? null;
@@ -58,28 +58,51 @@ class LoginModel extends Model{
         return $resultado;
     }
 
-    public static function persistir($args, $usuario){
+   
+    public function persistir($usuario)
+    {
+        // Usar las propiedades del objeto en lugar de $args
         $sql = "CALL usuario_persistir(";
-        $sql .= LibFormat::strEmptyToNull($args['id'] ?? null) . ", ";
-        $sql .= LibFormat::strEmptyToNull($args['nombre']) . ", ";
-        $sql .= LibFormat::strEmptyToNull($args['apellido']) . ", ";
-        $sql .= LibFormat::strEmptyToNull($args['nombreUsuario']) . ", ";
-        $sql .= LibFormat::strEmptyToNull($args['dni']) . ", ";
-        $sql .= LibFormat::strEmptyToNull($args['telefono']) . ", ";
-        $sql .= LibFormat::strEmptyToNull($args['email']) . ", ";
-        $sql .= LibFormat::strEmptyToNull($args['password']) . ", ";
-        $sql .= LibFormat::intEmptyToNull(0) . ", "; // Valor '1' fijo
-        $sql .= LibFormat::strEmptyToNull($args['fechaModificacion'] ?? null) . ", "; // Puede ser NULL si está vacío
-        $sql .= LibFormat::strEmptyToNull($usuario) . ", "; // Usuario
-        $sql .= LibFormat::strEmptyToNull($args['modificadoPor'] ?? null) . ", "; // Puede ser NULL
-        $sql .= LibFormat::strEmptyToNull($args['aceptadoPor'] ?? null) . ", "; // Puede ser NULL
-        $sql .= LibFormat::intEmptyToNull($args['fkRol']) . ")"; // Valor fkRol puede ser NULL si está vacío
-    
-        // Para depuración, puedes quitarlo en producción
+        $sql .= LibFormat::strEmptyToNull($this->id) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->nombre) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->apellido) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->nombreUsuario) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->dni) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->telefono) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->email) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->password) . ", ";
+        $sql .= LibFormat::intEmptyToNull(0) . ", "; // Valor '0' fijo
+        $sql .= LibFormat::strEmptyToNull($this->fechaModificacion) . ", ";
+        $sql .= LibFormat::strEmptyToNull($usuario) . ", "; // Usuario que realiza la operación
+        $sql .= LibFormat::strEmptyToNull($this->modificadoPor) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->aceptadoPor) . ", ";
+        $sql .= LibFormat::intEmptyToNull($this->fkRol) . ")";
+        
+        // Ejecutar la consulta
         $resultado = self::consultarSQL($sql);
         return $resultado;
     }
     
+    public function obtenerPorLogin($credencial) {
+        // Preparar la consulta con el procedimiento almacenado
+        $sql = "CALL usuario_obtenerPorLogin(";
+        $sql .= LibFormat::strEmptyToNull($credencial) . ")";  // Formateo de la credencial para que sea NULL si está vacía
+        
+        // Ejecutar la consulta y devolver el resultado
+        $resultado = self::consultarSQL($sql);
+        return $resultado;
+    }
+
+    public function verificarRegistro() {
+        $sql = "CALL usuario_verificarRegistro(";
+        $sql .= LibFormat::strEmptyToNull($this->nombreUsuario) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->dni) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->telefono) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->email) . ")"; 
+        // Ejecutar la consulta y devolver el resultado
+        $resultado = self::consultarSQL($sql);
+        return $resultado;
+    }
 
 
 }

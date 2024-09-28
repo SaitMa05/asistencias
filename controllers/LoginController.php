@@ -8,15 +8,58 @@ class LoginController{
 
     public static function login(Router $router){
 
-
         $router->render('login/login', [
         ]);
     }
+    public static function autenticar(Router $router){
+        $auth = $_POST;
+        $credencial = $auth['nombreUsuario'];
+        $password = $auth['password'];
+    
+        $usuarioModel = new LoginModel();
+        $usuario = $usuarioModel->obtenerPorLogin($credencial);
+        
+        if ($usuario) {
+            // Convertimos a JSON y luego a array
+            $json = json_encode($usuario);
+            $array = json_decode($json, true);
+            $passwordUsuario = $array[0]['password'];
+    
+            // Verificamos la contraseña
+            if (password_verify($password, $passwordUsuario)) {
+                session_start();
+                $_SESSION['id'] = $array[0]['id'];
+                $_SESSION['username'] = $array[0]['nombreUsuario'];
+                $_SESSION['nombre'] = $array[0]['nombre'];
+                $_SESSION['apellido'] = $array[0]['apellido'];
+                $_SESSION['email'] = $array[0]['email'];
+                
+    
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Usuario autenticado'
+                ]);
 
+                exit; // Finalizamos para evitar otras salidas
+            } else {
+                // Contraseña incorrecta
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Contraseña incorrecta'
+                ]);
+                exit;
+            }
+        } else {
+            // Usuario no encontrado
+            echo json_encode([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ]);
+            exit;
+        }
+    }
 
     public static function index(Router $router){
-
-        
         $router->render('login/registro', [
             
         ]);
@@ -28,23 +71,36 @@ class LoginController{
         
         $argsUsuario = $_POST;
 
-        $usuario = new LoginModel();
-        $usuario->persistir($argsUsuario, "Mati");
+        // Hashear la contraseña antes de persistir
+        if (isset($argsUsuario['password'])) {
+            $argsUsuario['password'] = password_hash($argsUsuario['password'], PASSWORD_BCRYPT);
+        }
+        // Crear la instancia del modelo de usuario
+        $usuario = new LoginModel($argsUsuario);
 
-        // Procesar los datos de inicio de sesión o validarlos
-        // Aquí podrías validar al usuario, pero por ahora solo devolveremos los datos
+        $userExistente = $usuario->verificarRegistro();
 
-        // Enviar los datos de vuelta como respuesta JSON
+        if (!empty($userExistente)) {
+            // Si el usuario ya existe, devolver mensaje de error
+            echo json_encode([
+                'status' => false,
+                'message' => 'El usuario ya existe con alguno de los datos proporcionados (nombre de usuario, DNI, teléfono o email).'
+            ]);
+            exit;
+        }
+
+        // Persistir el usuario con la contraseña hasheada
+        $usuario->persistir($argsUsuario['nombreUsuario']);
+        
+        // Responder con un mensaje de éxito
         echo json_encode([
-            'status' => 'success',
+            'status' => true,
             'data' => $argsUsuario,
             'message' => 'Usuario registrado correctamente'
         ]);
-
+        
         exit;
 
-
-        $router->render('login/registro', []);
     }
 
     public static function bad(){
