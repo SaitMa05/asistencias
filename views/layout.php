@@ -8,6 +8,7 @@
     <link rel="icon" href="../build/img/logo.avif">
     <title>ESC</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="../build/css/app.css">
     </head>
     <body class="p-3 m-0 border-0 bd-example m-0 border-0"> 
@@ -66,7 +67,6 @@
 
     <?= $contenido ?>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../build/js/index.js"></script>
       
   </body>

@@ -9,6 +9,9 @@ class Router{
     public function get($url, $fn){
         $this->rutasGET[$url] = $fn;
     }
+    public function post($url, $fn){
+        $this->rutasPOST[$url] = $fn;
+    }
 
 
     public function comprobarRutas() {
@@ -22,6 +25,8 @@ class Router{
 
         if($metodo === 'GET') {
             $fn = $this->rutasGET[$urlActual] ?? null;
+        }else{
+            $fn = $this->rutasPOST[$urlActual] ?? null;
         }
 
         if($fn) {
@@ -33,7 +38,11 @@ class Router{
     }
 
     // Mostrar Vistas
-    public function render($view){
+    public function render($view, $datos = []) {
+        
+        foreach($datos as $key => $value) {
+            $$key = $value;
+        }
 
         ob_start();
         include __DIR__ . "/views/$view.php";

@@ -6,6 +6,10 @@
         width: 60%;
     }
     @include desktop{
-        width: 40%;
+        width: 30rem;
+    }
+
+    input{
+        border-radius: none;
     }
 }
