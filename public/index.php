@@ -16,6 +16,7 @@ $router->get('/login/bad', [LoginController::class, 'bad']);
 $router->get('/registro', [LoginController::class, 'index']);
 $router->post('/registro/crear', [LoginController::class, 'crear']);
 $router->post('/login/autenticar', [LoginController::class, 'autenticar']);
+$router->get('/login/cerrar-sesion', [LoginController::class, 'cs']);
 
 
 $router->comprobarRutas();

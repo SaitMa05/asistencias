@@ -29,15 +29,23 @@
             <hr class="text-white">
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/registro">Registro</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
+                <? if(!isset($_SESSION['login'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/registro">Registro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                <? endif; ?>
+
+                <? if(isset($_SESSION['login'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/login/cerrar-sesion">Cerrar Sesion</a>
+                    </li>
+                <? endif; ?>
                 
                 <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -66,6 +74,7 @@
     <div id="loading" style="display: none;">
         <div class="spinner"></div>
     </div>
+
 
     <?= $contenido ?>
 

@@ -28,11 +28,13 @@ class LoginController{
             // Verificamos la contraseña
             if (password_verify($password, $passwordUsuario)) {
                 session_start();
+                session_regenerate_id(true);
                 $_SESSION['id'] = $array[0]['id'];
-                $_SESSION['username'] = $array[0]['nombreUsuario'];
+                $_SESSION['nombreUsuario'] = $array[0]['nombreUsuario'];
                 $_SESSION['nombre'] = $array[0]['nombre'];
                 $_SESSION['apellido'] = $array[0]['apellido'];
                 $_SESSION['email'] = $array[0]['email'];
+                $_SESSION['login'] = true;
                 
     
                 echo json_encode([
@@ -53,7 +55,7 @@ class LoginController{
             // Usuario no encontrado
             echo json_encode([
                 'success' => false,
-                'message' => 'Usuario no encontrado'
+                'message' => 'Usuario no encontrado o no aceptado'
             ]);
             exit;
         }
@@ -105,6 +107,12 @@ class LoginController{
 
     public static function bad(){
         header('Location: /login/');
+    }
+
+    public static function cs(){
+        session_start();
+        $_SESSION = [];
+        header('Location: /login');
     }
 
 }

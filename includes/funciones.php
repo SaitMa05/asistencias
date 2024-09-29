@@ -18,6 +18,8 @@ function estaAutenticado() {
     }
 }
 
+
+
 function debuguear($variable) {
     echo "<pre>";
     var_dump($variable);
@@ -26,6 +28,11 @@ function debuguear($variable) {
 }
 
 
+function iniciarSession() {
+    session_start();
 
-
-
+    $auth = $_SESSION['login'];
+    if(!$auth) {
+        header('Location: /login');
+    }
+}

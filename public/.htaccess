@@ -20,4 +20,8 @@
     RewriteRule (.*?)index\.php/*(.*) /$1$2 [R=301,NE,L]
 
     RewriteRule ^/?$ /dashboard [R=301,L]
+
+    <FilesMatch "\.(env|ini|git|htaccess|log)$">
+        Require all denied
+    </FilesMatch>
 </IfModule>
