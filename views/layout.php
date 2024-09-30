@@ -22,6 +22,17 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+
+            <div class="offcanvas-header gap-2">
+                <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" class="object-fit-cover align-self-start mr-3 rounded-circle" alt="User Avatar" width="60" height="60">
+                <div class="media-body">
+                    <h6 class="m-0 text-white"> <?=$nombre . " " .$apellido?> </h6>
+                    <div>
+                        <p class="m-0 text-white" style="font-size: 12px;"><?= $email ?></p>
+                    </div>
+                </div>
+            </div>
+
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title text-white" id="offcanvasDarkNavbarLabel">Menu</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>

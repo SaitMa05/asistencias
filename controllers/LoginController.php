@@ -8,8 +8,9 @@ class LoginController{
 
     public static function login(Router $router){
         loginOn();
-
+        $nombre = "Holas";
         $router->render('login/login', [
+            
         ]);
     }
     public static function autenticar(Router $router){
