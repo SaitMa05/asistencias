@@ -6,6 +6,10 @@ $(document).ready(function() {
 
         var formData = $(this).serialize(); // Serializa los datos del formulario
 
+        if (!validarFormulario(formData)) {
+            return;
+        }
+
         $.ajax({
             url: '/login/autenticar', // Cambia esto por la URL de tu servidor
             type: 'POST',
@@ -32,4 +36,23 @@ $(document).ready(function() {
             }
         });
     });
+
+    function validarFormulario(formData) {
+        // Aquí va la validación personalizada de tu formulario
+        // Regresa true si es válido, false si no lo es.
+        // Ejemplo simple:
+            const {nombreUsuario, password } = formData.split('&').reduce((obj, item) => {
+            const [key, value] = item.split('=');
+            obj[key] = value;
+            return obj;
+        }, {});
+
+        if (nombreUsuario === '' || password === '') {
+            toastr.error('Todos los campos son obligatorios', 'Error');
+            return false;
+        }
+
+
+        return true;
+    }
 });
