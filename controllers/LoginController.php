@@ -8,9 +8,9 @@ class LoginController{
 
     public static function login(Router $router){
         loginOn();
-        $nombre = "Holas";
+        $titulo = "Login";
         $router->render('login/login', [
-            
+            'titulo' => $titulo,
         ]);
     }
     public static function autenticar(Router $router){
@@ -65,8 +65,9 @@ class LoginController{
 
     public static function index(Router $router){
         loginOn();
+        $titulo = "Registro";
         $router->render('login/registro', [
-            
+            'titulo' => $titulo,
         ]);
     }
 

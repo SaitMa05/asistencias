@@ -13,11 +13,13 @@ class DashboardController{
         $nombre = $_SESSION['nombre'];
         $apellido = $_SESSION['apellido'];
         $email = $_SESSION['email'];
+        $titulo = "Inicio";
 
         $router->render('dashboard/index', [
             'nombre' => $nombre,
             'apellido' => $apellido,
-            'email' => $email
+            'email' => $email,
+            'titulo' => $titulo
         ]);
     }
 
