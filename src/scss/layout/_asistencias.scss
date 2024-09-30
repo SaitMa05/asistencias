@@ -1,0 +1,10 @@
+.asistencia-confirma{
+    input[type="checkbox"] {
+        transform: scale(1.5); /* Escalar el tamaño del checkbox */
+        margin-right: 10px;    /* Añadir margen a la derecha */
+        cursor: pointer;
+    }
+}
+#example{
+    margin-bottom: 2rem;
+}
