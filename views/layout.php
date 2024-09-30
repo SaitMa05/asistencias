@@ -27,7 +27,7 @@
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
 
             <? if(isset($_SESSION['login'])): ?>
-            <div class="offcanvas-header gap-2">
+            <a class="text-decoration-none" href=""><div class="offcanvas-header gap-2">
                 <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" class="object-fit-cover align-self-start mr-3 rounded-circle" alt="User Avatar" width="60" height="60">
                 <div class="media-body">
                     <h6 class="m-0 text-white"> <?=$nombre . " " .$apellido?> </h6>
@@ -35,7 +35,7 @@
                         <p class="m-0 text-white" style="font-size: 12px;"><?= $email ?></p>
                     </div>
                 </div>
-            </div>
+            </div></a>
             <? endif; ?>
 
             <div class="offcanvas-header">
@@ -57,6 +57,9 @@
                 <? if(isset($_SESSION['login'])): ?>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Perfil</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/login/cerrar-sesion">Cerrar Sesion</a>

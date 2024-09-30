@@ -32,7 +32,7 @@
     </form>
 
 
-    <div class="container bg-white p-4 my-4">
+    <div class="container table-asistencia p-4 my-4">
         <h2 class="py-4">Alumnos de 1ro B</h2>
         <form action="">
             <table id="example" class="display" style="width:100%">
@@ -82,8 +82,8 @@
                     <!-- Agrega más filas aquí -->
                 </tbody>
             </table>
-            <div class="col-12 text-end my-4">
-                    <button class="btn btn-orange" type="buttom">Enviar Asistencia</button>
+            <div class="col-12 text-end my-4 px-3">
+                <button class="btn btn-orange" type="buttom">Enviar Asistencia</button>
             </div>
         </form>
     </div>
