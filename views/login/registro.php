@@ -33,6 +33,7 @@
         <input type="password" class="form-control rounded-0" id="passwordConfirm" name="passwordConfirm" placeholder="Confirma tu contraseña" required>
     </div>
     <div class="mb-3">
+        <label for="fkRol" class="form-label text-white">Rol de la Escuela:</label>
         <select class="form-select rounded-0" style="" name="fkRol" id="fkRol">
             <option value="" disabled selected> -- Seleccionar --</option>
             <option value="1">Profesor</option>

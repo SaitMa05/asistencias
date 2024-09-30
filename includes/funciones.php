@@ -36,3 +36,10 @@ function iniciarSession() {
         header('Location: /login');
     }
 }
+
+function loginOn() {
+    session_start();
+    if(isset($_SESSION['login'])) {
+        header('Location: /');
+    }
+}

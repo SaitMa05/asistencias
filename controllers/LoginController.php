@@ -7,6 +7,7 @@ use Model\LoginModel;
 class LoginController{
 
     public static function login(Router $router){
+        loginOn();
 
         $router->render('login/login', [
         ]);
@@ -62,6 +63,7 @@ class LoginController{
     }
 
     public static function index(Router $router){
+        loginOn();
         $router->render('login/registro', [
             
         ]);
