@@ -3,7 +3,7 @@
 namespace Controllers;
 use Controller;
 use MVC\Router;
-class PuertasController{
+class PuertasManejoController{
 
     public static function index(Router $router){
         iniciarSession();
