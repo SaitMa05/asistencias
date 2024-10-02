@@ -34,7 +34,7 @@
 
     <div class="container table-asistencia p-4 my-4">
         <h2 class="py-4">Alumnos de 1ro B</h2>
-        <form action="">
+        <form action="" method="POST">
             <table id="example" class="display" style="width:100%">
                 <thead class="mb-4">
                     <tr>
