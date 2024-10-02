@@ -1,0 +1,38 @@
+.puertas{
+    .puertas-cont{
+        .puerta{
+            button{
+                border-radius: 6px 6px 0 0;
+            }
+            .historial{
+                border-radius: 1rem;
+                li{
+                    list-style-type: none;
+
+                    
+
+                    &::before {
+                        content: "🕑"; 
+                        color: green;
+                        font-size: 20px;
+                    }
+                }
+                
+            }
+        }
+    }
+}
+
+
+.btn-puertas{
+    background-color: #f73939;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+
+    &:hover{
+        background-color: lighten(#f73939, 10%);
+        color: white;
+        list-style-type: none;
+    }
+}
