@@ -8,6 +8,12 @@
                 border-radius: 1rem;
                 li{
                     list-style-type: none;
+                    border-bottom: 1px solid gray;
+
+                    &:last-child{
+                        border-bottom: none;
+                        border-radius: 0 0 6px 6px;
+                    }
 
                     
 

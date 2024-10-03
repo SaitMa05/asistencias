@@ -3,14 +3,28 @@
 
 namespace Model;
 
-class LoginModel extends Model{
+class LoginModel extends Model
+{
 
     protected static $tabla = 'usuario';
     protected static $columnasDB = [
-        'id', 'nombre', 'apellido', 'nombreUsuario', 'dni', 'telefono', 'email', 
-        'password', 'aceptado', 'fechaCreacion', 'fechaModificacion', 
-        'fechaEliminacion', 'creadorPor', 'modificadoPor', 'eliminadoPor', 
-        'aceptadoPor', 'fkRol'
+        'id',
+        'nombre',
+        'apellido',
+        'nombreUsuario',
+        'dni',
+        'telefono',
+        'email',
+        'password',
+        'aceptado',
+        'fechaCreacion',
+        'fechaModificacion',
+        'fechaEliminacion',
+        'creadorPor',
+        'modificadoPor',
+        'eliminadoPor',
+        'aceptadoPor',
+        'fkRol'
     ];
 
     public $id;
@@ -52,13 +66,14 @@ class LoginModel extends Model{
         $this->fkRol = $args['fkRol'] ?? null;
     }
 
-    public static function obtener(){
+    public static function obtener()
+    {
         $query = "call usuario_obtener()";
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
 
-   
+
     public function persistir($usuario)
     {
         // Usar las propiedades del objeto en lugar de $args
@@ -77,28 +92,30 @@ class LoginModel extends Model{
         $sql .= LibFormat::strEmptyToNull($this->modificadoPor) . ", ";
         $sql .= LibFormat::strEmptyToNull($this->aceptadoPor) . ", ";
         $sql .= LibFormat::intEmptyToNull($this->fkRol) . ")";
-        
+
         // Ejecutar la consulta
         $resultado = self::consultarSQL($sql);
         return $resultado;
     }
-    
-    public function obtenerPorLogin($credencial) {
+
+    public function obtenerPorLogin($credencial)
+    {
         // Preparar la consulta con el procedimiento almacenado
         $sql = "CALL usuario_obtenerPorLogin(";
         $sql .= LibFormat::strEmptyToNull($credencial) . ")";  // Formateo de la credencial para que sea NULL si está vacía
-        
+
         // Ejecutar la consulta y devolver el resultado
         $resultado = self::consultarSQL($sql);
         return $resultado;
     }
 
-    public function verificarRegistro() {
+    public function verificarRegistro()
+    {
         $sql = "CALL usuario_verificarRegistro(";
         $sql .= LibFormat::strEmptyToNull($this->nombreUsuario) . ", ";
         $sql .= LibFormat::strEmptyToNull($this->dni) . ", ";
         $sql .= LibFormat::strEmptyToNull($this->telefono) . ", ";
-        $sql .= LibFormat::strEmptyToNull($this->email) . ")"; 
+        $sql .= LibFormat::strEmptyToNull($this->email) . ")";
         // Ejecutar la consulta y devolver el resultado
         $resultado = self::consultarSQL($sql);
         return $resultado;
