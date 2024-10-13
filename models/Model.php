@@ -57,4 +57,10 @@ class Model {
 
         return $objeto;
     }
+
+    public function generarToken($longitud = 32) {
+        $bytesAleatorios = random_bytes($longitud / 2);
+        return bin2hex($bytesAleatorios);
+    }
+    
 }

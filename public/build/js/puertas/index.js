@@ -39,7 +39,7 @@ $(document).ready(function() {
 
             const puertaElement = `
             <div class="d-grid puerta mb-2">
-                <button type="button" class="btn btn-puertas p-2">${puerta.nombre}</button>
+                <button type="button" value="${puerta.id}" class="btn btn-puertas btnAbrir p-2">${puerta.nombre}</button>
                 <div class="historial">
                     ${historialHtml}
                 </div>
@@ -51,6 +51,11 @@ $(document).ready(function() {
         });
     }
 
+    // Evento click para los botones de abrir puertas
+    $(document).on('click', '.btnAbrir', function() {
+        alert('Botón de abrir puerta clickeado');
+    });
+    
     // Llamar a la función para obtener los datos al cargar la página
     obtenerPuertas();
 });

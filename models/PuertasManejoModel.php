@@ -19,6 +19,8 @@ class PuertasManejoModel extends Model{
     public $id;
     public $nombre;
     public $descripcion;
+
+    public $abierta;
     public $fechaCreacion;
     public $fechaModificacion;
     public $fechaEliminacion;
@@ -40,6 +42,7 @@ class PuertasManejoModel extends Model{
         $this->id = $args['id'] ?? null;
         $this->nombre = $args['nombre'] ?? '';
         $this->descripcion = $args['descripcion'] ?? '';
+        $this->abierta = $args['abierta'] ?? 0;
         $this->fechaCreacion = $args['fechaCreacion'] ?? null;
         $this->fechaModificacion = $args['fechaModificacion'] ?? null;
         $this->fechaEliminacion = $args['fechaEliminacion'] ?? null;
