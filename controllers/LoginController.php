@@ -20,6 +20,7 @@ class LoginController{
     
         $usuarioModel = new LoginModel();
         $usuario = $usuarioModel->obtenerPorLogin($credencial);
+
         
         if ($usuario) {
             // Convertimos a JSON y luego a array
@@ -30,6 +31,7 @@ class LoginController{
             // Verificamos la contraseña
             if (password_verify($password, $passwordUsuario)) {
                 session_start();
+
                 session_regenerate_id(true);
                 $_SESSION['id'] = $array[0]['id'];
                 $_SESSION['nombreUsuario'] = $array[0]['nombreUsuario'];
@@ -37,6 +39,10 @@ class LoginController{
                 $_SESSION['apellido'] = $array[0]['apellido'];
                 $_SESSION['email'] = $array[0]['email'];
                 $_SESSION['login'] = true;
+        
+                $rol = $usuarioModel->obtenerRolPorId($array[0]['fkRol']);
+                $_SESSION['rol'] = $rol;
+                $_SESSION['fkRol'] = $array[0]['fkRol'];
                 
     
                 echo json_encode([

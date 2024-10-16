@@ -1,11 +1,11 @@
     <form class="row g-4 mb-4">
         <div class="col-md-2">
             <label for="validationDefault01" class="form-label text-white">Rol:</label>
-            <p class="form-control" style="font-size: 16x;">Profesor</p>
+            <p class="form-control" style="font-size: 16x;"><?=$rol?></p>
         </div>
         <div class="col-md-2">
             <label for="validationDefault02" class="form-label text-white">Nombre:</label>
-            <p class="form-control" style="font-size: 16px;">Matias Morelli</p>
+            <p class="form-control" style="font-size: 16px;"><?= $nombre . " " . $apellido?></p>
 
         </div>
         <div class="col-md-4">
@@ -18,11 +18,9 @@
             <label for="validationDefault04" class="form-label text-white">Curso:</label>
             <select class="form-select" id="validationDefault04" required>
                 <option selected disabled value="">-- Seleccionar --</option>
-                <option>1ro A</option>
-                <option>1ro B</option>
-                <option>1ro C</option>
-                <option>1ro D</option>
-                
+                <?php foreach($cursos as $curso): ?>
+                    <option value="<?= $curso->id?>"><?= $curso->year . " " . $curso->division ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
 
@@ -39,49 +37,63 @@
                 <thead class="mb-4">
                     <tr>
                         <th>Nombre</th>
-                        <th>Confirmar Asistencia</th>
+                        <th>Asistencia</th>
+                        <th>Tardanza</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Tiger Nixon</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" data-id="1" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"></td>
                     </tr>
                     <tr>
                         <td>Garrett Winters</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"> </td>
                     </tr>
                     <tr>
                         <td>Garrett Winters</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"> </td>
                     </tr>
                     <tr>
                         <td>Garrett Winters</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"> </td>
                     </tr>
                     <tr>
                         <td>Garrett Winters</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"> </td>
                     </tr>
                     <tr>
                         <td>Garrett Winters</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"> </td>
                     </tr>
                     <tr>
                         <td>Garrett Winters</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"> </td>
                     </tr>
                     <tr>
                         <td>Garrett Winters</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"> </td>
                     </tr>
                     <tr>
                         <td>Garrett Winters</td>
                         <td class="asistencia-confirma text-center"><input type="checkbox" name="asistencia" value="asistencia"></td>
+                        <td class="asistencia-confirma text-center"><input type="checkbox" name="tardanza" data-id="1" value="tardanza"> </td>
                     </tr>
                     <!-- Agrega más filas aquí -->
                 </tbody>
             </table>
+            <div class="detalles">
+                <h4>Detalles: </h4>
+                <textarea name="" id=""></textarea>
+            </div>
             <div class="col-12 text-end my-4 px-3">
                 <button class="btn btn-orange" type="buttom">Enviar Asistencia</button>
             </div>

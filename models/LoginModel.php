@@ -121,5 +121,11 @@ class LoginModel extends Model
         return $resultado;
     }
 
+    public function obtenerRolPorId($fkRol){
+        $sql = "CALL obtener_rolPorId(" . LibFormat::intEmptyToNull($fkRol) . ")";
+        $resultado = self::consultarSQL($sql);
+
+        return $resultado[0]->nombre;
+    }
 
 }

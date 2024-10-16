@@ -62,5 +62,7 @@ class Model {
         $bytesAleatorios = random_bytes($longitud / 2);
         return bin2hex($bytesAleatorios);
     }
+
+    
     
 }

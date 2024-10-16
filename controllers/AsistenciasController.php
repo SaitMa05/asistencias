@@ -3,6 +3,8 @@
 namespace Controllers;
 use Controller;
 use MVC\Router;
+use Model\AsistenciasModel;
+use Model\CursosModel;
 
 class AsistenciasController{
 
@@ -13,14 +15,22 @@ class AsistenciasController{
         $nombre = $_SESSION['nombre'];
         $apellido = $_SESSION['apellido'];
         $email = $_SESSION['email'];
-        $titulo = "Inicio";
+        $rol = $_SESSION['rol'];
         $titulo = "Asistencias";
+
+
+        $cursos = new CursosModel();
+        $cursos = $cursos->obtenerCursos();
+
+        
             
         $router->render('asistencias/index', [
             'nombre' => $nombre,
             'apellido' => $apellido,
             'email' => $email,
-            'titulo' => $titulo
+            'titulo' => $titulo,
+            'rol' => $rol,
+            'cursos' => $cursos
         ]);
 
     }
