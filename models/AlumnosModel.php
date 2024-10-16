@@ -3,58 +3,58 @@
 
 namespace Model;
 
-class CursosModel extends Model
+class AlumnosModel extends Model
 {
 
-    protected static $tabla = 'asistencias';
+    protected static $tabla = 'alumnos';
     protected static $columnasDB = [
         'id',
-        'year',
-        'division',
+        'nombre',
+        'apellido',
+        'dni',
+        'telefono',
         'fechaCreacion',
         'fechaModificacion',
         'fechaEliminacion',
         'creadoPor',
         'modificadoPor',
         'eliminadoPor',
+        'fkCurso'
     ];
 
     public $id;
-    public $year;
-    public $division;
+    public $nombre;
+    public $apellido;
+    public $dni;
+    public $telefono;
     public $fechaCreacion;
     public $fechaModificacion;
     public $fechaEliminacion;
     public $creadoPor;
     public $modificadoPor;
-
     public $eliminadoPor;
-
-
-
-
+    public $fkCurso;
 
 
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;
-        $this->year = $args['year'] ?? null;
-        $this->division = $args['division'] ?? 0;
+        $this->nombre = $args['nombre'] ?? '';
+        $this->apellido = $args['apellido'] ?? '';
+        $this->dni = $args['dni'] ?? '';
+        $this->telefono = $args['telefono'] ?? '';
         $this->fechaCreacion = $args['fechaCreacion'] ?? null;
         $this->fechaModificacion = $args['fechaModificacion'] ?? null;
         $this->fechaEliminacion = $args['fechaEliminacion'] ?? null;
         $this->creadoPor = $args['creadoPor'] ?? null;
         $this->modificadoPor = $args['modificadoPor'] ?? null;
         $this->eliminadoPor = $args['eliminadoPor'] ?? null;
+        $this->fkCurso = $args['fkCurso'] ?? null;
     }
 
-    public function obtenerCursos(){
-        $sql = "CALL obtener_cursos()";
+    public function obtenerAlumnosPorCurso($idCurso){
+        $sql = "CALL obtener_alumnosPorCurso(". LibFormat::intEmptyToNull($idCurso) .")";
         $resultado = self::consultarSQL($sql);
         return $resultado;
-
     }
-
-
-
 }
