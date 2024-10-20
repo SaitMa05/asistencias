@@ -39,28 +39,20 @@ class AsistenciasController{
     public static function alumnos(Router $router) {
         if (isset($_POST['cursos'])) {
             $curso_id = $_POST['cursos'];
-    
+        
             // Lógica para obtener los alumnos del curso usando el modelo
             $alumnosModel = new AlumnosModel();
             $alumnos = $alumnosModel->obtenerAlumnosPorCurso($curso_id);
-    
-            // Generar la vista parcial que devolverá las filas de la tabla
-            if (!empty($alumnos)) {
-                foreach ($alumnos as $alumno) {
-                    echo "<tr>";
-                    echo "<td>" . $alumno->nombre . " " . $alumno->apellido . "</td>";
-                    echo "<td class='asistencia-confirma text-center'><input type='checkbox' name='asistencia' data-id='" . $alumno->id . "' value='asistencia'></td>";
-                    echo "<td class='asistencia-confirma text-center'><input type='checkbox' name='tardanza' data-id='" . $alumno->id . "' value='tardanza'></td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='3'>No se encontraron alumnos para este curso.</td></tr>";
-            }
-        } else {
-            echo "<tr><td colspan='3'>No se recibió el ID del curso.</td></tr>";
-        }
-
         
+            // Devolver los alumnos como JSON
+            header('Content-Type: application/json');
+            echo json_encode($alumnos);
+            exit;
+        } else {
+            // En caso de no recibir un curso válido, devolver un array vacío
+            echo json_encode([]);
+            exit;
+        }
     }
 
 }

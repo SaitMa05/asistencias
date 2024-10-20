@@ -56,11 +56,12 @@
     flex-direction: column;
     width: 60%;
     height: 60%;
+    margin-top: 10rem;
 
     textarea{
         font-size: 0.8rem;
-        width: 100%;
-        height: 20rem;
+        width: 80%;
+        height: 10rem;
         border: 1px solid $azulClaro;
         border-radius: 6px;
         padding: 6px;
@@ -72,11 +73,19 @@
 .formAsistencias{
     display: flex;
     justify-content: center;
-    max-width: 70%;
     margin: auto;
+
+    @include desktop{
+        max-width: 70%;
+    }
 }
 .btnCursos{
     width: 100%;
     margin-top: 0;
-    
+}
+#tablaAsistencias{
+    margin-bottom: 2rem;
+}
+.dataTables_length{
+    margin-bottom: 2rem;
 }

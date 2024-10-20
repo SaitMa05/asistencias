@@ -35,3 +35,16 @@ function navActive(){
       }
     });
 }
+
+
+function alertaMensaje(mensaje, tipo){
+    if(tipo == 'success'){
+        toastr.success(mensaje, 'Éxito');
+    }else if(tipo == 'error'){
+        toastr.error(mensaje, 'Error');
+    }else if(tipo == 'warning'){
+        toastr.warning(mensaje, 'Advertencia');
+    }else if(tipo == 'info'){
+        toastr.info(mensaje, 'Información');
+    }
+}

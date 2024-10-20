@@ -3,7 +3,7 @@
             <label for="validationDefault01" class="form-label text-white">Rol:</label>
             <p class="form-control" style="font-size: 16x;"><?=$rol?></p>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <label for="validationDefault02" class="form-label text-white">Nombre:</label>
             <p class="form-control" style="font-size: 16px;"><?= $nombre . " " . $apellido?></p>
         </div>
@@ -13,7 +13,7 @@
                 <input type="datetime-local" class="form-control" style="font-size: 16px;" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" required>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label for="cursos" class="form-label text-white">Curso:</label>
             <select class="form-select" id="cursos" name="cursos" required>
                 <option selected disabled value="">-- Seleccionar --</option>
