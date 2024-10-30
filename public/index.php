@@ -24,6 +24,7 @@ $router->get('/puertas', [PuertasManejoController::class, 'index']);
 $router->post('/registro/crear', [LoginController::class, 'crear']);
 $router->post('/login/autenticar', [LoginController::class, 'autenticar']);
 $router->post('/asistencias/alumnos', [AsistenciasController::class, 'alumnos']);
+$router->post('/asistencias/enviar', [AsistenciasController::class, 'enviar']);
 
 
 $router->comprobarRutas();

@@ -34,7 +34,7 @@
 
     <div class="container table-asistencia p-4 my-4">
         <h2 class="py-4">Alumnos de 1ro B</h2>
-        <form action="" method="POST">
+        <form action="/asistencias/enviar" method="POST" id="formAsistencia">
             <table id="tablaAsistencias" class="display" style="width:100%">
                 <thead class="mb-4">
                     <tr>
@@ -44,8 +44,6 @@
                     </tr>
                 </thead>
                 <tbody id="alumnos">
-                    
-                    <!-- Agrega más filas aquí -->
                 <br>
                 </tbody>
             </table>

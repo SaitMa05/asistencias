@@ -16,18 +16,16 @@ $(document).ready(function() {
         return;
     });
 
-
-    
     $('#cursos').change(function() {
         var curso_id = $(this).val();
 
         if (curso_id !== "") {
-            // Hacer la solicitud AJAX
+            // Hacer la solicitud AJAX para obtener los alumnos
             $.ajax({
-                url: 'asistencias/alumnos', // Cambia a la ruta de tu controlador
+                url: 'asistencias/alumnos', // Ruta al controlador PHP
                 method: 'POST',
                 data: { cursos: curso_id },
-                dataType: 'json', // Especificar que esperamos un JSON como respuesta
+                dataType: 'json', // Esperamos un JSON como respuesta
                 success: function(response) {
                     // Limpiar la tabla de DataTables
                     table.clear().draw();
@@ -37,12 +35,26 @@ $(document).ready(function() {
                         $.each(response, function(index, alumno) {
                             var fila = "<tr>" +
                                 "<td>" + alumno.nombre + " " + alumno.apellido + "</td>" +
-                                "<td class='asistencia-confirma text-center'><input type='checkbox' name='asistencia' data-id='" + alumno.id + "' value='asistencia'></td>" +
-                                "<td class='asistencia-confirma text-center'><input type='checkbox' name='tardanza' data-id='" + alumno.id + "' value='tardanza'></td>" +
+                                "<td class='asistencia-confirma text-center'><input type='checkbox' name='asistencia[" + alumno.id + "]' class='asistencia-checkbox' data-id='" + alumno.id + "' value='1'></td>" +
+                                "<td class='asistencia-confirma text-center'><input type='checkbox' name='tardanza[" + alumno.id + "]' class='tardanza-checkbox' data-id='" + alumno.id + "' value='1'></td>" +
                                 "</tr>";
 
                             // Agregar la fila a la tabla de DataTables
                             table.row.add($(fila)).draw(false);
+                        });
+
+                        // Agregar el comportamiento de exclusión a los checkboxes de asistencia y tardanza
+                        $('.asistencia-checkbox').on('change', function() {
+                            var alumnoId = $(this).data('id');
+                            if ($(this).is(':checked')) {
+                                $('.tardanza-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                            }
+                        });
+                        $('.tardanza-checkbox').on('change', function() {
+                            var alumnoId = $(this).data('id');
+                            if ($(this).is(':checked')) {
+                                $('.asistencia-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                            }
                         });
                     } else {
                         table.row.add($("<tr><td colspan='3'>No se encontraron alumnos para este curso.</td></tr>")).draw(false);
@@ -59,4 +71,53 @@ $(document).ready(function() {
             table.row.add($("<tr><td colspan='3'>Por favor, seleccione un curso.</td></tr>")).draw(false);
         }
     });
+
+    $('#formAsistencia').on('submit', function(e) {
+        e.preventDefault(); // Evita el envío tradicional del formulario
+
+
+        if(!validarFormulario(formData)){
+            return;
+        }
+
+        // Asegurar que todos los checkboxes no seleccionados también se envíen con valor `0`
+        $('input[type="checkbox"]').each(function() {
+            if (!$(this).is(':checked')) {
+                // Agregar un campo oculto con valor 0 para los checkboxes no seleccionados
+                $(this).prop('checked', true).val(0);
+            }
+        });
+
+        // Serializar el formulario y enviar los datos
+        var formData = $(this).serialize();
+        console.log(formData); // Muestra los datos serializados en consola para depuración
+
+        $.ajax({
+            url: '/asistencias/enviar', // Cambia esto a la URL de tu servidor
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                console.log("Respuesta recibida:", response);
+                if (response.status) {
+                    toastr.success(response.message, 'Éxito');
+                } else {
+                    toastr.error(response.message, 'Error');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+
+    function validarFormulario(formData) {
+        
+        if (formData === 'tablaAsistencias_length') {
+            alertaMensaje('Debe seleccionar un curso y marcar la asistencia de al menos un alumno', 'error');
+            return false;
+        }   
+
+        return true;
+    }
 });
