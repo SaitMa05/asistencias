@@ -56,36 +56,48 @@ class AsistenciasController{
     }
 
     public static function enviar(Router $router) {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Captura los datos de asistencia y tardanza desde $_POST
-            $asistencias = isset($_POST['asistencia']) ? $_POST['asistencia'] : [];
-            $tardanzas = isset($_POST['tardanza']) ? $_POST['tardanza'] : [];
-    
-            $resultados = []; // Arreglo para almacenar los resultados de asistencia y tardanza
-    
-            // Verifica que $asistencias y $tardanzas sean arrays
-            if (is_array($asistencias) && is_array($tardanzas)) {
-                // Procesa cada alumno en el array de asistencias
-                foreach ($asistencias as $alumno_id => $asistencia) {
-                    $tardanza = isset($tardanzas[$alumno_id]) ? 1 : 0;
-                    $asistencia = $asistencia ? 1 : 0;
-    
-                    // Almacena el resultado en el arreglo
-                    $resultados[] = [
-                        'alumno_id' => $alumno_id,
-                        'asistencia' => $asistencia,
-                        'tardanza' => $tardanza
-                    ];
-                }
-            // Devuelve el resultado como respuesta JSON para que puedas verificarlo en la vista previa
-            header('Content-Type: application/json');
-            echo json_encode(['status' => true, 'resultados' => $resultados]);
-            exit;
-            } else {
-                echo "Error: Los datos de asistencia o tardanza no están en el formato esperado.";
-                exit;
-            }
+        iniciarSession();
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $asistencias = $_POST['asistencia'] ?? [];
+            $tardanzas = $_POST['tardanza'] ?? [];
+            $detalles = $_POST['detalles'] ?? null;
+            $fkUsuario = $_SESSION['id'];
+
+            $resultados = [];
+
+            // Procesa cada alumno en el array de asistencias
+            foreach ($asistencias as $fkAlumno => $asistencia) {
+                $tardanza = $tardanzas[$fkAlumno] ?? 0;
+                $fkAlumnos = $fkAlumno;
+                // Almacena el resultado en el arreglo
+                $resultados[] = [
+                    'asistencia' => $asistencia,
+                    'fkUsuario' => $fkUsuario,
+                    'fkAlumnos' => $fkAlumnos,
+                    'tardanza' => $tardanza,
+                    'detalles' => $detalles ?? "No hay nada que agregar",
+                ];
+            }
+            
+
+            foreach ($resultados as $registro) {
+                
+                $asistenciasModel = new AsistenciasModel($registro);
+                $asistenciasModel->persistir();
+            }
+            
+            echo json_encode([
+                'status' => true,
+                'data' => $resultados,
+                'message' => 'Asistencias registradas correctamente'
+            ]);
+            
+            exit;
+            
+        } else {
+            echo "Error: Método de solicitud no permitido.";
+            exit;
         }
     }
     

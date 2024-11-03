@@ -1,18 +1,18 @@
     <form class="row g-4 mb-4 formAsistencias">
-        <div class="col-md-2">
+        <div class="col-md-4">
             <label for="validationDefault01" class="form-label text-white">Rol:</label>
             <p class="form-control" style="font-size: 16x;"><?=$rol?></p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <label for="validationDefault02" class="form-label text-white">Nombre:</label>
             <p class="form-control" style="font-size: 16px;"><?= $nombre . " " . $apellido?></p>
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <label for="validationDefaultUsername" class="form-label text-white">Fecha:</label>
             <div class="input-group">
-                <input type="datetime-local" class="form-control" style="font-size: 16px;" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" required>
+                <input type="datetime-local" class="form-control" name="fecha" style="font-size: 16px;" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" required>
             </div>
-        </div>
+        </div> -->
         <div class="col-md-2">
             <label for="cursos" class="form-label text-white">Curso:</label>
             <select class="form-select" id="cursos" name="cursos" required>
@@ -49,7 +49,7 @@
             </table>
             <div class="detalles">
                 <h4>Detalles: </h4>
-                <textarea name="" id=""></textarea>
+                <textarea name="detalles" id=""></textarea>
             </div>
             <div class="col-12 text-end my-4 px-3">
                 <button class="btn btn-orange" type="buttom">Enviar Asistencia</button>

@@ -43,15 +43,12 @@ class AsistenciasModel extends Model
     }
 
 
-    public function persistir($fecha, $asistencia, $fkUsuario, $fkAlumnos, $fechaCreacion, $fechaEliminacion, $detalles, $tardanza)
+    public function persistir()
     {
         $sql = "CALL asistencias_persistir(";
-        $sql .= LibFormat::strEmptyToNull($this->fecha) . ", ";
         $sql .= LibFormat::intEmptyToNull($this->asistencia) . ", ";
-        $sql .= LibFormat::intEmptyToNull($this->fkUsuario) . ", ";
-        $sql .= LibFormat::intEmptyToNull($this->fkAlumnos) . ", ";
-        $sql .= LibFormat::strEmptyToNull($this->fechaCreacion) . ", ";
-        $sql .= LibFormat::strEmptyToNull($this->fechaEliminacion) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->fkUsuario) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->fkAlumnos) . ", ";
         $sql .= LibFormat::strEmptyToNull($this->detalles) . ", ";
         $sql .= LibFormat::intEmptyToNull($this->tardanza) . ")";
 

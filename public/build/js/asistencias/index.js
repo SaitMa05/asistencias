@@ -18,7 +18,6 @@ $(document).ready(function() {
 
     $('#cursos').change(function() {
         var curso_id = $(this).val();
-
         if (curso_id !== "") {
             // Hacer la solicitud AJAX para obtener los alumnos
             $.ajax({
@@ -35,10 +34,16 @@ $(document).ready(function() {
                         $.each(response, function(index, alumno) {
                             var fila = "<tr>" +
                                 "<td>" + alumno.nombre + " " + alumno.apellido + "</td>" +
-                                "<td class='asistencia-confirma text-center'><input type='checkbox' name='asistencia[" + alumno.id + "]' class='asistencia-checkbox' data-id='" + alumno.id + "' value='1'></td>" +
-                                "<td class='asistencia-confirma text-center'><input type='checkbox' name='tardanza[" + alumno.id + "]' class='tardanza-checkbox' data-id='" + alumno.id + "' value='1'></td>" +
+                                "<td class='asistencia-confirma text-center'>" +
+                                    "<input type='hidden' name='asistencia[" + alumno.id + "]' value='0'>" +
+                                    "<input type='checkbox' name='asistencia[" + alumno.id + "]' class='asistencia-checkbox' data-id='" + alumno.id + "' value='1'>" +
+                                "</td>" +
+                                "<td class='asistencia-confirma text-center'>" +
+                                    "<input type='hidden' name='tardanza[" + alumno.id + "]' value='0'>" +
+                                    "<input type='checkbox' name='tardanza[" + alumno.id + "]' class='tardanza-checkbox' data-id='" + alumno.id + "' value='1'>" +
+                                "</td>" +
                                 "</tr>";
-
+                            
                             // Agregar la fila a la tabla de DataTables
                             table.row.add($(fila)).draw(false);
                         });
@@ -80,17 +85,10 @@ $(document).ready(function() {
             return;
         }
 
-        // Asegurar que todos los checkboxes no seleccionados también se envíen con valor `0`
-        $('input[type="checkbox"]').each(function() {
-            if (!$(this).is(':checked')) {
-                // Agregar un campo oculto con valor 0 para los checkboxes no seleccionados
-                $(this).prop('checked', true).val(0);
-            }
-        });
 
         // Serializar el formulario y enviar los datos
         var formData = $(this).serialize();
-        console.log(formData); // Muestra los datos serializados en consola para depuración
+        
 
         $.ajax({
             url: '/asistencias/enviar', // Cambia esto a la URL de tu servidor
@@ -101,6 +99,7 @@ $(document).ready(function() {
                 console.log("Respuesta recibida:", response);
                 if (response.status) {
                     toastr.success(response.message, 'Éxito');
+                    resetForm();
                 } else {
                     toastr.error(response.message, 'Error');
                 }
@@ -110,6 +109,10 @@ $(document).ready(function() {
             }
         });
     });
+
+    function resetForm() {
+        $('#formAsistencia')[0].reset(); // Resetea el formulario
+    }
 
     function validarFormulario(formData) {
         
