@@ -6,7 +6,6 @@ $(document).ready(function() {
             method: 'GET',
             dataType: 'json',
             success: function(puertasConMovimientos) {
-                
                 mostrarPuertas(puertasConMovimientos); // Llamar a la función para mostrar los datos
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -26,34 +25,40 @@ $(document).ready(function() {
         $.each(puertas, function(index, puerta) {
             let historialHtml = ''; // Variable para almacenar el historial de cada puerta
                 
-            // Generar el historial si la puerta tiene movimientos
-            if (puerta.movimientos && puerta.movimientos.length > 0) {
-                $.each(puerta.movimientos, function(i, movimiento) {
-                    historialHtml += `<li class="bg-dark text-white p-2 m-0">
-                    ${movimiento.nombreUsuario} - ${movimiento.fechaApertura} - Cierre: ${movimiento.fechaCierre}
-                </li>`;
-                });
-            } else {
-                historialHtml = `<li class="bg-dark text-white p-2 m-0">No hay movimientos registrados.</li>`;
-            }
-
             const puertaElement = `
             <div class="d-grid puerta mb-2">
-                <button type="button" value="${puerta.id}" class="btn btn-puertas btnAbrir p-2">${puerta.nombre}</button>
+                <button type="button" value="${puerta.id}" data-nombre="${puerta.nombre}" class="btn btn-puertas btnAbrir p-2">${puerta.nombre}</button>
                 <div class="historial">
                     ${historialHtml}
                 </div>
             </div>
             `;
-
+            
             // Añadir los elementos de cada puerta al contenedor
             $contenedorPuertas.append(puertaElement);
         });
     }
 
-    // Evento click para los botones de abrir puertas
+    // Evento click para los botones de abrir puertas con SweetAlert
     $(document).on('click', '.btnAbrir', function() {
-        alert('Botón de abrir puerta clickeado');
+        const puertaId = $(this).val();
+        const puertaNombre = $(this).data('nombre');
+        
+        // SweetAlert de confirmación
+        Swal.fire({
+            title: `¿Está seguro de que desea abrir la puerta "${puertaNombre}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, abrir',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, realiza el envío de datos
+                const puertaNombre = $(this).data('nombre');
+                const event = new CustomEvent('dataSent', { detail: puertaNombre });
+                window.dispatchEvent(event);
+            }
+        });
     });
     
     // Llamar a la función para obtener los datos al cargar la página
