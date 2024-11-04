@@ -9,7 +9,7 @@ class DashboardController{
 
     public static function index(Router $router){
         iniciarSession();
-
+        
         $nombre = $_SESSION['nombre'];
         $apellido = $_SESSION['apellido'];
         $email = $_SESSION['email'];

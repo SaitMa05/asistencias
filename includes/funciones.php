@@ -37,6 +37,25 @@ function iniciarSession() {
     }
 }
 
+function adminSession() {
+    if (isset($_SESSION['rol'])) {
+        $rol = $_SESSION['rol'];
+        
+        if ($rol === 'administrador' || $rol === 'directivo' || $rol === 'ROOT') {
+            // Acceso permitido
+            return true;
+        } else {
+            header("Location: /login");
+            exit;
+        }
+    } else {
+        header("Location: /login");
+        exit;
+    }
+}
+
+
+
 function loginOn() {
     session_start();
     if(isset($_SESSION['login'])) {

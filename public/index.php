@@ -8,6 +8,7 @@ use Controllers\DashboardController;
 use Controllers\LoginController;
 use Controllers\AsistenciasController;
 use Controllers\PuertasManejoController;
+use Controllers\AdminController;
 
 $router = new Router();
 
@@ -19,6 +20,8 @@ $router->get('/registro', [LoginController::class, 'index']);
 $router->get('/login/cerrar-sesion', [LoginController::class, 'cs']);
 $router->get('/asistencias', [AsistenciasController::class, 'index']);
 $router->get('/puertas', [PuertasManejoController::class, 'index']);
+$router->get('/admin', [AdminController::class, 'index']);
+$router->get('/admin/asistencias', [AdminController::class, 'asistencias']);
 
 // Post
 $router->post('/registro/crear', [LoginController::class, 'crear']);
