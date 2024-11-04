@@ -20,7 +20,8 @@ class PuertasManejoController{
         $puertasListado = $puertas->obtener();
 
         // Obtener los movimientos de todas las puertas
-        $movimientos = $puertas->movimientoObtener();
+        // $movimientos = $puertas->movimientoObtener();
+        
 
         // Arreglo para asociar los movimientos a las puertas
         $puertasConMovimientos = [];
@@ -30,15 +31,14 @@ class PuertasManejoController{
             $puertaConMovimientos = (array) $puerta; // Convertimos el objeto a array para manipularlo
             $puertaConMovimientos['movimientos'] = []; // Inicializamos la lista de movimientos
 
-            foreach ($movimientos as $mov) {
-                if ($mov->fkPuertas == $puerta->id) { // Comparamos si los movimientos pertenecen a la puerta actual
-                    $puertaConMovimientos['movimientos'][] = [
-                        'fechaApertura' => $mov->fechaApertura,
-                        'fechaCierre' => $mov->fechaCierre ?? 'Aun no se ha cerrado',
-                        'nombreUsuario' => $mov->nombreUsuario
-                    ];
-                }
-            }
+            // foreach ($movimientos as $mov) {
+            //     if ($mov->fkPuertas == $puerta->id) { // Comparamos si los movimientos pertenecen a la puerta actual
+            //         $puertaConMovimientos['movimientos'][] = [
+            //             'fechaApertura' => $mov->fechaApertura,
+            //             'nombreUsuario' => $mov->nombreUsuario
+            //         ];
+            //     }
+            // }
 
             // Añadimos la puerta con sus movimientos al arreglo
             $puertasConMovimientos[] = $puertaConMovimientos;
@@ -60,6 +60,61 @@ class PuertasManejoController{
             'puertasListado' => $puertasConMovimientos
         ]);
     }
+
+
+    public static function movimiento(){
+        iniciarSession();
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $fkPuertas = $_POST['fkPuertas'];
+            $fkUsuario = $_SESSION['id'];
+            
+
+            $movimiento = new PuertasManejoModel([
+                'fkPuertas' => $fkPuertas,
+                'fkUsuario' => $fkUsuario
+            ]);
+
+
+            // header('X-CSRF-Token: ' . $token);
+
+            $movimiento->persistir();
+            
+            if ($fkPuertas && $fkUsuario) {
+                echo json_encode([
+                    'status' => true,
+                    'message' => 'Puerta abierta correctamente'
+                ]);
+                exit;
+            } else {
+                echo json_encode([
+                    'estado' => 'error',
+                    'mensaje' => 'Error al registrar el movimiento'
+                ]);
+                exit;
+            }
+        }
+    }
+
+    public static function token() {
+        $tokenModel = new PuertasManejoModel([
+            'fkPuertas' => $_POST['fkPuertas']
+        ]);
     
+        $tokenPuerta = $tokenModel->obtenerTokenPuertas();
+        $token = $tokenPuerta[0]->token;
+    
+        // Envía el token en el encabezado de respuesta
+        header('X-CSRF-Token: ' . $token);
+        
+        // Envía una respuesta en JSON para confirmar el envío al cliente
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Token enviado en el encabezado X-CSRF-Token'
+        ]);
+        var_dump($_SERVER);
+        exit;
+    
+    }
 
 }

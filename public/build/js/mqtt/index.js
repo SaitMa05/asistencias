@@ -1,3 +1,6 @@
+
+
+
 const options = {
   username: "hivemq.webclient.1725757864399", // Cambia por tu usuario de HiveMQ Cloud
   password: "9g1qsZ,O0<3.FhRlSd&H", // Cambia por tu contraseña de HiveMQ Cloud
@@ -16,7 +19,10 @@ const client = mqtt.connect(
 
 // Evento al conectar al broker MQTT
 client.on("connect", function () {
+  let MQTTConectado = true;
   // console.log('Conectado a HiveMQ Cloud');
+  const MQTTConnected = new CustomEvent('MQTTConectado', { detail: MQTTConectado });
+  window.dispatchEvent(MQTTConnected);
 
   // Suscribirse al tema (opcional, puedes suscribirte si necesitas recibir mensajes también)
   client.subscribe("mi/tema", function (err) {
@@ -27,12 +33,12 @@ client.on("connect", function () {
     }
   });
 });
+
 window.addEventListener('dataSent', function(event) {
     const receivedData = event.detail;
     if (client.connected) {
-        client.publish("mi/tema", receivedData);
-        console.log(receivedData);
-        console.log("Enviando", receivedData);
+        client.publish("mi/tema", receivedData);       
+        console.log('Mensaje enviado:', receivedData);
         
     }
 });

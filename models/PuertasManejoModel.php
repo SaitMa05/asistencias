@@ -14,6 +14,7 @@ class PuertasManejoModel extends Model{
         'creadoPor',
         'modificadoPor',
         'eliminadoPor'
+        
     ];
 
     public $id;
@@ -32,9 +33,11 @@ class PuertasManejoModel extends Model{
     public $nombrePuerta;
     public $nombreUsuario;
     public $fkPuertas;
+    public $fkUsuario;
     public $fechaApertura;
+    public $token;
 
-    public $fechaCierre;
+    
 
 
 
@@ -49,12 +52,14 @@ class PuertasManejoModel extends Model{
         $this->creadoPor = $args['creadoPor'] ?? '';
         $this->modificadoPor = $args['modificadoPor'] ?? '';
         $this->eliminadoPor = $args['eliminadoPor'] ?? '';
+        $this->token = $args['token'] ?? '';
 
         $this->nombrePuerta = $args['nombrePuerta'] ?? '';
         $this->nombreUsuario = $args['nombreUsuario'] ?? '';
         $this->fkPuertas = $args['fkPuertas'] ?? '';
         $this->fechaApertura = $args['fechaApertura'] ?? '';
-        $this->fechaCierre = $args['fechaCierre'] ?? 'Aun no se ha cerrado';
+
+        $this->fkUsuario = $args['fkUsuario'] ?? '';
 
         
     }
@@ -66,9 +71,24 @@ class PuertasManejoModel extends Model{
         return $resultado;
     }
 
-    public function movimientoObtener(){
-        $query = "call movimientoPuerta_obtener()";
-        $resultado = self::consultarSQL($query);
+    // public function movimientoObtener(){
+    //     $query = "call movimientoPuerta_obtener()";
+    //     $resultado = self::consultarSQL($query);
+    //     return $resultado;
+    // }
+
+    public function persistir(){
+        $sql = "CALL movimiento_persistir(";
+        $sql .= LibFormat::intEmptyToNull($this->fkUsuario) . ", ";
+        $sql .= LibFormat::intEmptyToNull($this->fkPuertas) . ")";
+        $resultado = self::consultarSQL($sql);
+        return $resultado;
+    }
+
+    public function obtenerTokenPuertas(){
+        $sql = "call obtener_tokenPuertas(";
+        $sql .= LibFormat::intEmptyToNull($this->fkPuertas) . ")";
+        $resultado = self::consultarSQL($sql);
         return $resultado;
     }
 
