@@ -40,6 +40,8 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Asistencia</th>
+                        <th>1/2</th>
+                        <th>1/4</th>
                         <th>Tardanza</th>
                     </tr>
                 </thead>

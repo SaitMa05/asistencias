@@ -62,13 +62,18 @@ class AsistenciasController{
             $asistencias = $_POST['asistencia'] ?? [];
             $tardanzas = $_POST['tardanza'] ?? [];
             $detalles = $_POST['detalles'] ?? null;
+            $mediafalta = $_POST['media'] ?? [];
+            $cuartofalta = $_POST['cuarto'] ?? [];
             $fkUsuario = $_SESSION['id'];
+
 
             $resultados = [];
 
             // Procesa cada alumno en el array de asistencias
             foreach ($asistencias as $fkAlumno => $asistencia) {
                 $tardanza = $tardanzas[$fkAlumno] ?? 0;
+                $media = $mediafalta[$fkAlumno] ?? 0;
+                $cuarto = $cuartofalta[$fkAlumno] ?? 0;
                 $fkAlumnos = $fkAlumno;
                 // Almacena el resultado en el arreglo
                 $resultados[] = [
@@ -77,6 +82,9 @@ class AsistenciasController{
                     'fkAlumnos' => $fkAlumnos,
                     'tardanza' => $tardanza,
                     'detalles' => $detalles ?? "No hay nada que agregar",
+                    'media' => $media,
+                    'cuarto' => $cuarto
+                    
                 ];
             }
             
@@ -87,6 +95,7 @@ class AsistenciasController{
                 $asistenciasModel->persistir();
             }
             
+
             echo json_encode([
                 'status' => true,
                 'data' => $resultados,

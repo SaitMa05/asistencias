@@ -3,10 +3,12 @@ $(document).ready(function() {
     $.fn.dataTable.ext.errMode = 'none';
 
     var table = $('#tablaAsistencias').DataTable({
+        "pageLength": 50,
         "columnDefs": [
             { "width": "90%", "targets": 0 },  // Ancho de la primera columna
             { "width": "10%", "targets": 1 },  // Ancho de la segunda columna
-        ]
+        ],
+        "reponsive": true
     });
 
 
@@ -39,6 +41,14 @@ $(document).ready(function() {
                                     "<input type='checkbox' name='asistencia[" + alumno.id + "]' class='asistencia-checkbox' data-id='" + alumno.id + "' value='1'>" +
                                 "</td>" +
                                 "<td class='asistencia-confirma text-center'>" +
+                                    "<input type='hidden' name='media[" + alumno.id + "]' value='0'>" +
+                                    "<input type='checkbox' name='media[" + alumno.id + "]' class='media-checkbox' data-id='" + alumno.id + "' value='1'>" +
+                                "</td>" +
+                                "<td class='asistencia-confirma text-center'>" +
+                                    "<input type='hidden' name='cuarto[" + alumno.id + "]' value='0'>" +
+                                    "<input type='checkbox' name='cuarto[" + alumno.id + "]' class='cuarto-checkbox' data-id='" + alumno.id + "' value='1'>" +
+                                "</td>" +
+                                "<td class='asistencia-confirma text-center'>" +
                                     "<input type='hidden' name='tardanza[" + alumno.id + "]' value='0'>" +
                                     "<input type='checkbox' name='tardanza[" + alumno.id + "]' class='tardanza-checkbox' data-id='" + alumno.id + "' value='1'>" +
                                 "</td>" +
@@ -53,12 +63,32 @@ $(document).ready(function() {
                             var alumnoId = $(this).data('id');
                             if ($(this).is(':checked')) {
                                 $('.tardanza-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                                $('.media-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                                $('.cuarto-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                            }
+                        });
+                        $('.media-checkbox').on('change', function() {
+                            var alumnoId = $(this).data('id');
+                            if ($(this).is(':checked')) {
+                                $('.asistencia-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                                $('.tardanza-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                                $('.cuarto-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                            }
+                        });
+                        $('.cuarto-checkbox').on('change', function() {
+                            var alumnoId = $(this).data('id');
+                            if ($(this).is(':checked')) {
+                                $('.asistencia-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                                $('.media-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                                $('.tardanza-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
                             }
                         });
                         $('.tardanza-checkbox').on('change', function() {
                             var alumnoId = $(this).data('id');
                             if ($(this).is(':checked')) {
                                 $('.asistencia-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                                $('.media-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
+                                $('.cuarto-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
                             }
                         });
                     } else {
@@ -79,16 +109,13 @@ $(document).ready(function() {
 
     $('#formAsistencia').on('submit', function(e) {
         e.preventDefault(); // Evita el envío tradicional del formulario
-
-
-        if(!validarFormulario(formData)){
-            return;
-        }
-
-
+        
         // Serializar el formulario y enviar los datos
         var formData = $(this).serialize();
         
+        if(!validarFormulario(formData)){
+            return;
+        }
 
         $.ajax({
             url: '/asistencias/enviar', // Cambia esto a la URL de tu servidor
@@ -115,7 +142,11 @@ $(document).ready(function() {
     }
 
     function validarFormulario(formData) {
+
+        console.log(formData);
+        return;
         
+            
         if (formData === 'tablaAsistencias_length') {
             alertaMensaje('Debe seleccionar un curso y marcar la asistencia de al menos un alumno', 'error');
             return false;

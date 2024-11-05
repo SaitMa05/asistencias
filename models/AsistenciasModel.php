@@ -16,6 +16,10 @@ class AsistenciasModel extends Model
         'fechaCreacion',
         'fechaCreacionProfesor',
         'fechaEliminacion',
+        'detalles',
+        'tardanza',
+        'media',
+        'cuarto'
     ];
 
     public $id;
@@ -27,6 +31,8 @@ class AsistenciasModel extends Model
     
     public $detalles;
     public $tardanza;
+    public $media;
+    public $cuarto;
     public $fechaEliminacion;
 
     public function __construct($args = [])
@@ -40,6 +46,8 @@ class AsistenciasModel extends Model
         $this->fechaEliminacion = $args['fechaEliminacion'] ?? null;
         $this->detalles = $args['detalles'] ?? null;
         $this->tardanza = $args['tardanza'] ?? 0;
+        $this->media = $args['media'] ?? 0;
+        $this->cuarto = $args['cuarto'] ?? 0;
     }
 
 
@@ -50,7 +58,9 @@ class AsistenciasModel extends Model
         $sql .= LibFormat::strEmptyToNull($this->fkUsuario) . ", ";
         $sql .= LibFormat::strEmptyToNull($this->fkAlumnos) . ", ";
         $sql .= LibFormat::strEmptyToNull($this->detalles) . ", ";
-        $sql .= LibFormat::intEmptyToNull($this->tardanza) . ")";
+        $sql .= LibFormat::strEmptyToNull($this->tardanza) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->media) . ", ";
+        $sql .= LibFormat::intEmptyToNull($this->cuarto) . ")";
 
         $resultado = self::consultarSQL($sql);
         return $resultado;
