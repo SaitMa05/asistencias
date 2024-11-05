@@ -130,6 +130,7 @@
                 <div class="collapse" id="usuariosSubmenu">
                     <a class="dropdown-item" href="">Nuevo Usuario</a>
                     <a class="dropdown-item" href="">Gestión de Usuarios</a>
+                    <a class="dropdown-item" href="">Aceptar Usuarios</a>
                     <a class="dropdown-item" href="">Gestión de Rols</a>
                 </div>
             </div>
