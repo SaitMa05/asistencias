@@ -36,24 +36,33 @@ class AsistenciasController{
 
     }
 
-    public static function alumnos(Router $router) {
+    public static function alumnosPorCurso(Router $router)
+    {
         if (isset($_POST['cursos'])) {
             $curso_id = $_POST['cursos'];
-        
-            // Lógica para obtener los alumnos del curso usando el modelo
+
+            // Obtener todos los alumnos del curso usando el modelo
             $alumnosModel = new AlumnosModel();
             $alumnos = $alumnosModel->obtenerAlumnosPorCurso($curso_id);
-        
-            // Devolver los alumnos como JSON
+
+            // Excluir las columnas 'telefono' y 'dni'
+            $columnasExcluidas = ['telefono', 'dni'];
+            $alumnosFiltrados = array_map(function($alumno) use ($columnasExcluidas) {
+                // Convertir objeto a array
+                $alumnoArray = get_object_vars($alumno);
+                return array_diff_key($alumnoArray, array_flip($columnasExcluidas));
+            }, $alumnos);
+
+            // Devolver los alumnos filtrados como JSON
             header('Content-Type: application/json');
-            echo json_encode($alumnos);
+            echo json_encode($alumnosFiltrados);
             exit;
         } else {
-            // En caso de no recibir un curso válido, devolver un array vacío
             echo json_encode([]);
             exit;
         }
     }
+    
 
     public static function enviar(Router $router) {
         iniciarSession();

@@ -26,7 +26,7 @@ $router->get('/admin/asistencias', [AdminController::class, 'asistencias']);
 // Post
 $router->post('/registro/crear', [LoginController::class, 'crear']);
 $router->post('/login/autenticar', [LoginController::class, 'autenticar']);
-$router->post('/asistencias/alumnos', [AsistenciasController::class, 'alumnos']);
+$router->post('/asistencias/alumnos', [AsistenciasController::class, 'alumnosPorCurso']);
 $router->post('/asistencias/enviar', [AsistenciasController::class, 'enviar']);
 $router->post('/puertas/movimiento', [PuertasManejoController::class, 'movimiento']);
 $router->post('/puertas/token', [PuertasManejoController::class, 'token']);

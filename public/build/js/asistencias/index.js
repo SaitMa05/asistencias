@@ -8,31 +8,28 @@ $(document).ready(function() {
             { "width": "90%", "targets": 0 },  // Ancho de la primera columna
             { "width": "10%", "targets": 1 },  // Ancho de la segunda columna
         ],
-        "reponsive": true
+        "responsive": true
     });
 
-
     $('#tablaAsistencias').on('error.dt', function(e, settings, techNote, message) {
-        // Mostrar el error en la consola o manejarlo como quieras
         alertaMensaje("No hay alumnos registrados en este curso", "error");
         return;
     });
 
     $('#cursos').change(function() {
         var curso_id = $(this).val();
+        var textoCursoSeleccionado = $(this).find('option:selected').text();  // Obtiene el texto visible de la opción seleccionada.
+        $('.texto-curso').html(`Alumnos de ${textoCursoSeleccionado}`);
         if (curso_id !== "") {
-            // Hacer la solicitud AJAX para obtener los alumnos
             $.ajax({
-                url: 'asistencias/alumnos', // Ruta al controlador PHP
+                url: 'asistencias/alumnos',
                 method: 'POST',
                 data: { cursos: curso_id },
-                dataType: 'json', // Esperamos un JSON como respuesta
+                dataType: 'json',
                 success: function(response) {
-                    // Limpiar la tabla de DataTables
                     table.clear().draw();
 
                     if (Array.isArray(response) && response.length > 0) {
-                        // Recorrer la respuesta y agregar filas a la tabla
                         $.each(response, function(index, alumno) {
                             var fila = "<tr>" +
                                 "<td>" + alumno.nombre + " " + alumno.apellido + "</td>" +
@@ -53,72 +50,73 @@ $(document).ready(function() {
                                     "<input type='checkbox' name='tardanza[" + alumno.id + "]' class='tardanza-checkbox' data-id='" + alumno.id + "' value='1'>" +
                                 "</td>" +
                                 "</tr>";
-                            
-                            // Agregar la fila a la tabla de DataTables
+
                             table.row.add($(fila)).draw(false);
                         });
 
-                        // Agregar el comportamiento de exclusión a los checkboxes de asistencia y tardanza
-                        $('.asistencia-checkbox').on('change', function() {
-                            var alumnoId = $(this).data('id');
-                            if ($(this).is(':checked')) {
-                                $('.tardanza-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                                $('.media-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                                $('.cuarto-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                            }
-                        });
-                        $('.media-checkbox').on('change', function() {
-                            var alumnoId = $(this).data('id');
-                            if ($(this).is(':checked')) {
-                                $('.asistencia-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                                $('.tardanza-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                                $('.cuarto-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                            }
-                        });
-                        $('.cuarto-checkbox').on('change', function() {
-                            var alumnoId = $(this).data('id');
-                            if ($(this).is(':checked')) {
-                                $('.asistencia-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                                $('.media-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                                $('.tardanza-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                            }
-                        });
-                        $('.tardanza-checkbox').on('change', function() {
-                            var alumnoId = $(this).data('id');
-                            if ($(this).is(':checked')) {
-                                $('.asistencia-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                                $('.media-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                                $('.cuarto-checkbox[data-id="' + alumnoId + '"]').prop('checked', false);
-                            }
-                        });
+                        agregarComportamientoCheckboxes();
                     } else {
-                        table.row.add($("<tr><td colspan='3'>No se encontraron alumnos para este curso.</td></tr>")).draw(false);
+                        table.row.add($("<tr><td colspan='5'>No se encontraron alumnos para este curso.</td></tr>")).draw(false);
                     }
                 },
                 error: function() {
                     alertaMensaje("Error al cargar los alumnos", "error");
-                    table.row.add($("<tr><td colspan='3'>Error al cargar los alumnos.</td></tr>")).draw(false);
+                    table.row.add($("<tr><td colspan='5'>Error al cargar los alumnos.</td></tr>")).draw(false);
                 }
             });
         } else {
-            // Si no se selecciona un curso, limpiar la tabla
             table.clear().draw();
-            table.row.add($("<tr><td colspan='3'>Por favor, seleccione un curso.</td></tr>")).draw(false);
+            table.row.add($("<tr><td colspan='5'>Por favor, seleccione un curso.</td></tr>")).draw(false);
         }
     });
 
     $('#formAsistencia').on('submit', function(e) {
-        e.preventDefault(); // Evita el envío tradicional del formulario
-        
-        // Serializar el formulario y enviar los datos
-        var formData = $(this).serialize();
-        
-        if(!validarFormulario(formData)){
-            return;
-        }
+        e.preventDefault();  // Evita el envío tradicional del formulario.
+    
+        var ausentes = [];  // Array para almacenar los alumnos ausentes.
+    
+        // Itera todas las filas (incluidas las no visibles debido a la paginación).
+        $('#tablaAsistencias').DataTable().rows().nodes().each(function(row) {
+            var $row = $(row);  // Convierte la fila a un objeto jQuery.
+            var nombreAlumno = $row.find('td:first').text();  // Obtiene el nombre del alumno en la fila actual.
 
+            // Comprueba si algún checkbox en la fila está marcado.
+            var asistenciaMarcada = $row.find('.asistencia-checkbox').is(':checked');
+            var mediaMarcada = $row.find('.media-checkbox').is(':checked');
+            var cuartoMarcada = $row.find('.cuarto-checkbox').is(':checked');
+            var tardanzaMarcada = $row.find('.tardanza-checkbox').is(':checked');
+
+            // Si ningún checkbox está marcado, se considera ausente.
+            if (!asistenciaMarcada && !mediaMarcada && !cuartoMarcada && !tardanzaMarcada) {
+                ausentes.push(nombreAlumno);
+            }
+        });
+    
+        // Actualiza el contenido del modal
+        if (ausentes.length === 0) {
+            // Mostrar mensaje de "Todos los alumnos están presentes" en la lista.
+            $('.infoModalForm ul').html('<li>No hay ausentes. ¡Qué grupo más responsable o había prueba?</li>');
+        } else {
+            // Mostrar la lista de alumnos ausentes.
+            var ausentesList = ausentes.map(function(ausente) {
+                return '<li>' + ausente + '</li>';
+            }).join('');
+            $('.infoModalForm ul').html(ausentesList);
+        }
+    
+        // Muestra el detalle escrito en el textarea dentro del modal.
+        var detalle = $('textarea[name="detalles"]').val();
+        $('.infoModalForm p').text(detalle || 'No se proporcionaron detalles.');
+    
+        // Abre el modal de verificación.
+        $('#verificacionModal').modal('show');
+    });
+    
+    $('#confirmarEnvio').on('click', function() {
+        var formData = $('#formAsistencia').serialize();  // Serializa el formulario completo.
+        
         $.ajax({
-            url: '/asistencias/enviar', // Cambia esto a la URL de tu servidor
+            url: '/asistencias/enviar',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -135,23 +133,46 @@ $(document).ready(function() {
                 console.error("Error en la solicitud AJAX:", error);
             }
         });
+
+        $('#verificacionModal').modal('hide'); // Cerrar el modal después de confirmar.
     });
 
-    function resetForm() {
-        $('#formAsistencia')[0].reset(); // Resetea el formulario
+    function agregarComportamientoCheckboxes() {
+        $('.asistencia-checkbox').on('change', function() {
+            var alumnoId = $(this).data('id');
+            if ($(this).is(':checked')) {
+                desmarcarOtrosCheckboxes(alumnoId, '.asistencia-checkbox');
+            }
+        });
+        $('.media-checkbox').on('change', function() {
+            var alumnoId = $(this).data('id');
+            if ($(this).is(':checked')) {
+                desmarcarOtrosCheckboxes(alumnoId, '.media-checkbox');
+            }
+        });
+        $('.cuarto-checkbox').on('change', function() {
+            var alumnoId = $(this).data('id');
+            if ($(this).is(':checked')) {
+                desmarcarOtrosCheckboxes(alumnoId, '.cuarto-checkbox');
+            }
+        });
+        $('.tardanza-checkbox').on('change', function() {
+            var alumnoId = $(this).data('id');
+            if ($(this).is(':checked')) {
+                desmarcarOtrosCheckboxes(alumnoId, '.tardanza-checkbox');
+            }
+        });
     }
 
-    function validarFormulario(formData) {
+    function desmarcarOtrosCheckboxes(alumnoId, currentClass) {
+        ['.asistencia-checkbox', '.media-checkbox', '.cuarto-checkbox', '.tardanza-checkbox'].forEach(function(selector) {
+            if (selector !== currentClass) {
+                $(selector + '[data-id="' + alumnoId + '"]').prop('checked', false);
+            }
+        });
+    }
 
-        console.log(formData);
-        return;
-        
-            
-        if (formData === 'tablaAsistencias_length') {
-            alertaMensaje('Debe seleccionar un curso y marcar la asistencia de al menos un alumno', 'error');
-            return false;
-        }   
-
-        return true;
+    function resetForm() {
+        $('#formAsistencia')[0].reset(); // Resetea el formulario.
     }
 });

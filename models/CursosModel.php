@@ -33,8 +33,6 @@ class CursosModel extends Model
 
 
 
-
-
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;
