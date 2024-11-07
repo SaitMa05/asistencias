@@ -15,24 +15,25 @@ class Router{
 
 
     public function comprobarRutas() {
-
         $urlActual = $_SERVER['REQUEST_URI'] ?? '/';
         $metodo = $_SERVER['REQUEST_METHOD'];
-
-        if(strpos($urlActual, '?')){ 
-            $urlActual = $_SERVER['REDIRECT_URL'];
-        }
-
+    
+        // Separar la URL del Query String (parámetros GET)
+        $urlActual = explode('?', $urlActual)[0];
+    
         if($metodo === 'GET') {
             $fn = $this->rutasGET[$urlActual] ?? null;
-        }else{
+        } else {
             $fn = $this->rutasPOST[$urlActual] ?? null;
         }
-
+    
         if($fn) {
+            // Llamar al controlador asociado a la ruta
             call_user_func($fn, $this);
         } else {
-            call_user_func($this->rutasGET['/login/bad']);
+            // Mostrar error 404 si la ruta no existe
+            http_response_code(404);
+            echo "Página no encontrada";
         }
     }
 
