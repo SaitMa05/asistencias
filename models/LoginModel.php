@@ -111,6 +111,14 @@ class LoginModel extends Model
         return $resultado;
     }
 
+    public function obtenerPorEmail(){
+        $sql = "CALL usuario_obtenerPorEmail(";
+        $sql .= LibFormat::strEmptyToNull($this->email) . ")";
+
+        $resultado = self::consultarSQL($sql);
+        return $resultado;
+    }
+
     public function verificarRegistro()
     {
         $sql = "CALL usuario_verificarRegistro(";

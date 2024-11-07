@@ -33,7 +33,6 @@ class Router{
             call_user_func($fn, $this);
         } else {
             call_user_func($this->rutasGET['/login/bad']);
-            
         }
     }
 

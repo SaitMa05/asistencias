@@ -20,6 +20,13 @@ $('#formResetPassword').on('submit', function (e) {
             // Verificamos la respuesta
             if (response.success) {
                 toastr.success(response.message, 'Éxito');
+
+                if(toastr.success) {
+                    setInterval(() => {
+                        window.location.href = '/emailsend';
+                    }, 2000);
+                }
+                
             } else {
                 toastr.error(response.message, 'Error');
             }

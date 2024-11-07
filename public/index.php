@@ -23,6 +23,7 @@ $router->get('/puertas', [PuertasManejoController::class, 'index']);
 $router->get('/admin', [AdminController::class, 'index']);
 $router->get('/admin/asistencias', [AdminController::class, 'asistencias']);
 $router->get('/resetpassword', [LoginController::class, 'resetPassword']);
+$router->get('/emailsend', [LoginController::class, 'emailsend']);
 
 // Post
 $router->post('/registro/crear', [LoginController::class, 'crear']);

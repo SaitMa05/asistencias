@@ -134,25 +134,54 @@ class LoginController{
     }
 
     public static function enviarEmail(Router $router) {
+        session_start();
         $emailUsuario = $_POST['email'];
 
-        $email = new EmailModel();
-
-        $destinatorio = $emailUsuario;
-        $asunto = 'Recuperación de contraseña';
-        $token = $email->generarToken();
-
-        $cuerpo = 'Su token: ' . $token;
-
-        $email->enviar($destinatorio, $asunto, $cuerpo);
-
-        echo json_encode([
-            'success' => true,
-            'data' => $email,
-            'message' => 'Email enviado correctamente'
+        $loginModel = new LoginModel([
+            'email' => $emailUsuario
         ]);
-        
-        exit;
+
+        $emailVerificado = $loginModel->obtenerPorEmail();
+
+        if($emailVerificado){
+            $email = new EmailModel();
+
+            $destinatorio = $emailUsuario;
+            $asunto = 'Recuperación de contraseña';
+            $token = $email->generarToken();
+    
+            $cuerpo = "http://asistencias.localhost/resetpassword?token=$token";
+    
+            $email->enviar($destinatorio, $asunto, $cuerpo);
+            
+            $_SESSION['emailEnviado'] = true;
+            echo json_encode([
+                'success' => true,
+                'data' => $email,
+                'message' => 'Email enviado correctamente'
+            ]);
+            exit;
+
+        }else{
+            echo json_encode([
+                'success' => false,
+                'message' => 'Email no encontrado'
+            ]);
+            exit;
+        }
+    }
+
+    public static function emailsend(Router $router){
+        session_start();
+        $emailEnviado = $_SESSION['emailEnviado'];
+        if(!$emailEnviado){
+            header('Location: /resetpassword');
+        }
+        $_SESSION = [];
+        $titulo = "Email Enviado";
+        $router->render('login/emailsend', [
+            'titulo' => $titulo,
+        ]);
     }
 
 }
