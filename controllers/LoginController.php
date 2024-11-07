@@ -3,6 +3,7 @@
 namespace Controllers;
 use MVC\Router;
 use Model\LoginModel;
+use Model\EmailModel;
 
 class LoginController{
 
@@ -123,6 +124,35 @@ class LoginController{
         session_start();
         $_SESSION = [];
         header('Location: /login');
+    }
+
+    public static function resetPassword(Router $router){
+        $titulo = "Reset Password";
+        $router->render('login/resetpassword', [
+            'titulo' => $titulo,
+        ]);
+    }
+
+    public static function enviarEmail(Router $router) {
+        $emailUsuario = $_POST['email'];
+
+        $email = new EmailModel();
+
+        $destinatorio = $emailUsuario;
+        $asunto = 'Recuperación de contraseña';
+        $token = $email->generarToken();
+
+        $cuerpo = 'Su token: ' . $token;
+
+        $email->enviar($destinatorio, $asunto, $cuerpo);
+
+        echo json_encode([
+            'success' => true,
+            'data' => $email,
+            'message' => 'Email enviado correctamente'
+        ]);
+        
+        exit;
     }
 
 }

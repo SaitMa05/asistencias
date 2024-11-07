@@ -22,6 +22,7 @@ $router->get('/asistencias', [AsistenciasController::class, 'index']);
 $router->get('/puertas', [PuertasManejoController::class, 'index']);
 $router->get('/admin', [AdminController::class, 'index']);
 $router->get('/admin/asistencias', [AdminController::class, 'asistencias']);
+$router->get('/resetpassword', [LoginController::class, 'resetPassword']);
 
 // Post
 $router->post('/registro/crear', [LoginController::class, 'crear']);
@@ -30,6 +31,7 @@ $router->post('/asistencias/alumnos', [AsistenciasController::class, 'alumnosPor
 $router->post('/asistencias/enviar', [AsistenciasController::class, 'enviar']);
 $router->post('/puertas/movimiento', [PuertasManejoController::class, 'movimiento']);
 $router->post('/puertas/token', [PuertasManejoController::class, 'token']);
+$router->post('/resetpassword/enviarEmail', [LoginController::class, 'enviarEmail']);
 
 
 $router->comprobarRutas();

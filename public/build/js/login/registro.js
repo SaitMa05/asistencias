@@ -46,40 +46,44 @@ $(document).ready(function() {
     }
 
     function validarFormulario(formData) {
-        // Aquí va la validación personalizada de tu formulario
-        // Regresa true si es válido, false si no lo es.
-        // Ejemplo simple:
-        const {nombre, apellido, nombreUsuario,dni, telefono,email, password, passwordConfirm } = formData.split('&').reduce((obj, item) => {
+        const { nombre, apellido, nombreUsuario, dni, telefono, email, password, passwordConfirm } = formData.split('&').reduce((obj, item) => {
             const [key, value] = item.split('=');
             obj[key] = value;
             return obj;
         }, {});
-
+    
         if (nombreUsuario === '' || email === '' || password === '') {
             toastr.error('Todos los campos son obligatorios', 'Error');
             return false;
         }
-
+    
         if (dni.length !== 8 || isNaN(dni)) {
-            toastr.error('El DNI debe ser valido', 'Error');
+            toastr.error('El DNI debe ser válido', 'Error');
             return false;
         }
-
+    
         if (telefono.length < 6 || isNaN(telefono)) {
-            toastr.error('El teléfono debe ser valido', 'Error');
+            toastr.error('El teléfono debe ser válido', 'Error');
             return false;
         }
-
-        if (password.length < 3) {
-            toastr.error('La contraseña debe tener al menos 6 caracteres', 'Error');
+    
+        // Expresión regular para validar la contraseña
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+    
+        if (!passwordRegex.test(password)) {
+            toastr.error('La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial', 'Error');
             return false;
         }
-
+    
         if (password !== passwordConfirm) {
             toastr.error('Las contraseñas no coinciden', 'Error');
             return false;
         }
-
+    
         return true;
     }
+    
+
+    
+    
 });

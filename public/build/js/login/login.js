@@ -1,7 +1,7 @@
-$(document).ready(function() {
-    console.log("Desde login.js");
+$(document).ready(function () {
+    // console.log("Desde login.js");
 
-    $('#formLogin').on('submit', function(e) {
+    $('#formLogin').on('submit', function (e) {
         e.preventDefault(); // Evita que el formulario se envíe de la manera tradicional
 
         var formData = $(this).serialize(); // Serializa los datos del formulario
@@ -15,10 +15,10 @@ $(document).ready(function() {
             type: 'POST',
             data: formData,
             dataType: 'json', // Indicamos que esperamos una respuesta JSON
-            beforeSend: function() {
+            beforeSend: function () {
                 $('#loading').show();
             },
-            success: function(response) {
+            success: function (response) {
                 // Verificamos la respuesta
                 if (response.success) {
                     toastr.success(response.message, 'Éxito');
@@ -27,32 +27,34 @@ $(document).ready(function() {
                     toastr.error(response.message, 'Error');
                 }
             },
-            complete: function() {
+            complete: function () {
                 $('#loading').hide();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 toastr.error('Error en la solicitud', 'Error');
                 console.error('Error:', error);
             }
         });
     });
 
-    function validarFormulario(formData) {
-        // Aquí va la validación personalizada de tu formulario
-        // Regresa true si es válido, false si no lo es.
-        // Ejemplo simple:
-            const {nombreUsuario, password } = formData.split('&').reduce((obj, item) => {
-            const [key, value] = item.split('=');
-            obj[key] = value;
-            return obj;
-        }, {});
 
-        if (nombreUsuario === '' || password === '') {
-            toastr.error('Todos los campos son obligatorios', 'Error');
-            return false;
-        }
-
-
-        return true;
-    }
 });
+
+function validarFormulario(formData) {
+    // Aquí va la validación personalizada de tu formulario
+    // Regresa true si es válido, false si no lo es.
+    // Ejemplo simple:
+    const { nombreUsuario, password } = formData.split('&').reduce((obj, item) => {
+        const [key, value] = item.split('=');
+        obj[key] = value;
+        return obj;
+    }, {});
+
+    if (nombreUsuario === '' || password === '') {
+        toastr.error('Todos los campos son obligatorios', 'Error');
+        return false;
+    }
+
+
+    return true;
+}

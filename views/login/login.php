@@ -11,6 +11,9 @@
         <input type="password" class="form-control rounded-0" id="password" name="password" placeholder="Ingresa tu contraseña" required>
     </div>
     <button type="buttom" class="btn btn-orange w-100 rounded-0">Iniciar Sesion</button>
+    <div class="password-link  text-end mt-3">
+        <a href="/resetpassword" style="font-size: 14px;" class="text-white">Haz olvidado tu contraseña?</a>
+    </div>
 </form>
 
 <script src="../build/js/login/login.js"></script>

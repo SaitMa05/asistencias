@@ -1,7 +1,7 @@
 <?php 
 
 function conectarDB() : mysqli {
-    $db = new mysqli('vps-4445190-x.dattaweb.com', 'c2650896_asisten', '@Sb@ftt7bP', 'c2650896_asisten');
+    $db = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
     if(!$db) {
         echo "Error no se pudo conectar";

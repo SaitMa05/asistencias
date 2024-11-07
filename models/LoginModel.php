@@ -44,6 +44,7 @@ class LoginModel extends Model
     public $eliminadoPor;
     public $aceptadoPor;
     public $fkRol;
+    public $token;
 
     public function __construct($args = [])
     {
@@ -64,6 +65,7 @@ class LoginModel extends Model
         $this->eliminadoPor = $args['eliminadoPor'] ?? null;
         $this->aceptadoPor = $args['aceptadoPor'] ?? null;
         $this->fkRol = $args['fkRol'] ?? null;
+        $this->token = $args['token'] ?? null;
     }
 
     public static function obtener()
@@ -126,6 +128,15 @@ class LoginModel extends Model
         $resultado = self::consultarSQL($sql);
 
         return $resultado[0]->nombre;
+    }
+
+    public function almacenarToken(){
+        $sql = "CALL usuario_almacenarToken(";
+        $sql .= LibFormat::strEmptyToNull($this->id) . ", ";
+        $sql .= LibFormat::strEmptyToNull($this->token) . ")";
+
+        $resultado = self::consultarSQL($sql);
+        return $resultado;
     }
 
 }
