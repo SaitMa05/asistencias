@@ -30,9 +30,12 @@ function debuguear($variable) {
 
 function iniciarSession() {
     session_start();
-
-    $auth = $_SESSION['login'];
-    if(!$auth) {
+    if(isset($_SESSION['login'])) {
+        $auth = $_SESSION['login'];
+        if(!$auth) {
+            header('Location: /login');
+        }
+    }else{
         header('Location: /login');
     }
 }

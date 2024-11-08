@@ -96,25 +96,25 @@ class PuertasManejoController{
         }
     }
 
-    public static function token() {
-        $tokenModel = new PuertasManejoModel([
-            'fkPuertas' => $_POST['fkPuertas']
-        ]);
+    // public static function token() {
+    //     $tokenModel = new PuertasManejoModel([
+    //         'fkPuertas' => $_POST['fkPuertas']
+    //     ]);
     
-        $tokenPuerta = $tokenModel->obtenerTokenPuertas();
-        $token = $tokenPuerta[0]->token;
+    //     $tokenPuerta = $tokenModel->obtenerTokenPuertas();
+    //     $token = $tokenPuerta[0]->token;
     
-        // Envía el token en el encabezado de respuesta
-        header('X-CSRF-Token: ' . $token);
+    //     // Envía el token en el encabezado de respuesta
+    //     header('X-CSRF-Token: ' . $token);
         
-        // Envía una respuesta en JSON para confirmar el envío al cliente
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Token enviado en el encabezado X-CSRF-Token'
-        ]);
-        var_dump($_SERVER);
-        exit;
+    //     // Envía una respuesta en JSON para confirmar el envío al cliente
+    //     echo json_encode([
+    //         'status' => 'success',
+    //         'message' => 'Token enviado en el encabezado X-CSRF-Token'
+    //     ]);
+    //     var_dump($_SERVER);
+    //     exit;
     
-    }
+    // }
 
 }

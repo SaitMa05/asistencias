@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="icon" href="../build/img/logo.avif">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -101,7 +102,7 @@
                     <i class="fas fa-door-open"></i> Puertas
                 </div>
                 <div class="collapse" id="puertasSubMenu">
-                    <a class="dropdown-item" href="">Gestionar Puertas</a>
+                    <a class="dropdown-item" href="/admin/puertas">Gestionar Puertas</a>
                     <a class="dropdown-item" href="">Movimientos</a>
                 </div>
 
